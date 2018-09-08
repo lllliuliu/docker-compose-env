@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql:
-    image: mysql:5.7
+    image: mariadb:latest
     volumes:
         - /data/docker/volumes/mysql:/var/lib/mysql
     expose:
@@ -12,6 +12,8 @@ services:
       - MYSQL_ROOT_PASSWORD=888888
       - MYSQL_DATABASE=app
     restart: on-failure
+    networks:
+      - GOLANG
 
   redis:
     image: redis:3.2.11
@@ -22,6 +24,8 @@ services:
     volumes:
       - /data/docker/volumes/redis:/data
     restart: on-failure
+    networks:
+      - GOLANG
 
   go:
     build:
@@ -34,4 +38,9 @@ services:
       - "${GO_PORT}:80"
     volumes:
       - /data/docker/volumes/golang/app:/go/src/app
+    networks:
+      - GOLANG
+
+networks:
+    GOLANG:${NETWORK_NAME}
 

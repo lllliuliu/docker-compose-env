@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+    nginx:
+        build:
+            context: ./nginx
+        container_name: LEMP_nginx
+        ports:
+            - "${NGINX_PORT}:80"
+        volumes:
+            - /data/docker/volumes/nginx/log:/log
+            - /data/docker/volumes/nginx/data:/data
+        networks:
+            - LEMP
+
+    redis:
+        build:
+            context: ./redis
+        container_name: LEMP_redis
+        volumes:
+            - /data/docker/volumes/redis/log:/log
+            - /data/docker/volumes/redis/data:/data
+        ports:
+            - "${REDIS_PORT}:6379"
+        networks:
+            - LEMP
+
+    mariaDB:
+        image: mariadb:latest
+        container_name: LEMP_mariaDB
+        volumes:
+            - /data/docker/volumes/mariadb:/var/lib/mysql:rw
+        ports:
+            - "${MARIADB_PORT}:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=888888
+            - MYSQL_DATABASE=app 
+            - MYSQL_USER=appuser
+            - MYSQL_PASSWORD=123456
+        networks:
+            - LEMP    
+
+    php7:
+        build:
+            context: ./php/php7
+        container_name: LEMP_php7
+        volumes:
+            - /data/docker/volumes/php/data:/data
+            - /data/docker/volumes/php/log:/log
+        depends_on:
+            - mariaDB
+            - redis
+        ports:
+            - "${PHP_PORT}:9000"       
+        networks:
+            - LEMP
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: LEMP_phpMyAdmin
+        ports:
+            - "${PHPMYADMIN_PORT}:80"
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=mariaDB
+        depends_on:
+            - mariaDB
+        networks:
+            - LEMP
+
+networks:
+    LEMP:
+      external:
+        name: ${NETWORK_NAME}
