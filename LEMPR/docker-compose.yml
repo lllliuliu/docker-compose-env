@@ -4,22 +4,22 @@ services:
     nginx:
         build:
             context: ./nginx
-        container_name: LEMP_nginx
         ports:
             - "${NGINX_PORT}:80"
         volumes:
-            - /data/docker/volumes/nginx/log:/log
-            - /data/docker/volumes/nginx/data:/data
+            - ${VOLUME_ROOT}/nginx/logs:/logs
+            - ${VOLUME_ROOT}/nginx/data:/data
+        depends_on:
+            - php-fpm-7
         networks:
             - LEMP
 
     redis:
         build:
             context: ./redis
-        container_name: LEMP_redis
         volumes:
-            - /data/docker/volumes/redis/log:/log
-            - /data/docker/volumes/redis/data:/data
+            - ${VOLUME_ROOT}/redis/logs:/logs
+            - ${VOLUME_ROOT}/redis/data:/data
         ports:
             - "${REDIS_PORT}:6379"
         networks:
@@ -27,9 +27,8 @@ services:
 
     mariaDB:
         image: mariadb:latest
-        container_name: LEMP_mariaDB
         volumes:
-            - /data/docker/volumes/mariadb:/var/lib/mysql:rw
+            - ${VOLUME_ROOT}/mariadb:/var/lib/mysql:rw
         ports:
             - "${MARIADB_PORT}:3306"
         environment:
@@ -40,24 +39,20 @@ services:
         networks:
             - LEMP    
 
-    php7:
+    php-fpm-7:
         build:
             context: ./php/php7
-        container_name: LEMP_php7
         volumes:
-            - /data/docker/volumes/php/data:/data
-            - /data/docker/volumes/php/log:/log
+            - ${VOLUME_ROOT}/php/data:/data
+            - ${VOLUME_ROOT}/php/logs:/logs
         depends_on:
             - mariaDB
             - redis
-        ports:
-            - "${PHP_PORT}:9000"       
         networks:
             - LEMP
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: LEMP_phpMyAdmin
         ports:
             - "${PHPMYADMIN_PORT}:80"
         environment:
