@@ -24,8 +24,9 @@
 ## 快速开始
 1. 拉取当前仓库代码到指定目录，当前假定为 `/dc`，并进入此目录
 2. 复制 `.env.demo` 到 `.env` 文件，并修改相关配置，配置说明见[docker-compose环境配置文件](#docker-compose环境配置文件)
-3. 启动 `docker-compose up -d`
-4. 访问 `http://test.self.com:NGINX_PORT/`(端口号替换成 .env 文件的 NGINX_PORT 配置，域名通过通过 nginx 配置)
+3. 使用 **docker network create** 命令创建网络，网络名和配置一致(@TODO 添加初始化脚本或工具)
+4. 启动 `docker-compose up -d`
+5. 访问 `http://test.self.com:NGINX_PORT/`(端口号替换成 .env 文件的 NGINX_PORT 配置，域名通过通过 nginx 配置)
 
 ## 使用方式
 进入 `/dc` 之后，所有使用方式和 **docker-compose** 使用方式一致，主要使用命令如下：
@@ -66,7 +67,7 @@
 ### Nginx配置文件
 Nginx 配置在 `/nginx` 目录下，包含两个主要配置：
 - `nginx.conf` 主要配置，一般不需要修改
-- `conf.d` server 配置，如有需要可以新增或修改，访问域名就在这里配置，如果需要配置 HTTPS ，则需要修改 Dockerfile 导入相关文件 ***(@TODO)***
+- `conf.d` server 配置，如有需要可以新增或修改，访问域名就在这里配置，如果需要配置 HTTPS ，则需要修改 Dockerfile 导入相关文件 ***(@TODO 添加HTTPS相关)***
 
 ### PHP配置文件
 PHP 配置在 `/php` 目录下，根据不同的版本包含不同的子文件夹，并包含了[多个不同的镜像](#php多镜像说明)，主要配置有：
@@ -77,7 +78,7 @@ PHP 配置在 `/php` 目录下，根据不同的版本包含不同的子文件�
 
 ### MariaDB配置文件
 MariaDB 当前直接使用的官方镜像，并使用默认配置
-以后会自定义相关配置 ***(@TODO)***
+***(@TODO 以后会自定义相关配置)***
 
 ## PHP相关
 PHP 相关都包含在 `/php` 目录下，根据不同的版本包含不同的子文件夹，包含多个不同的镜像，公用一个 **php.ini** 文件，同时它们全部都挂载同一个仓库卷 **/data**，里面包含相关代码。
