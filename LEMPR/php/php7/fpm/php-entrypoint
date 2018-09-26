@@ -1,0 +1,24 @@
+#!/bin/sh
+DATA="/data"
+USER="www-data"
+GROUP="www-data"
+
+while [ ! -f $DATA/fin.lock ]; do
+    echo "Wait for repo to initialize and try again 1 seconds later..."
+    sleep 1
+done
+
+# Update session floder permissions
+chown -R $USER:$GROUP /session
+
+# Initialize work 
+# Example:Set php.ini environment for Laravel
+# echo "APP_ENV=$APP_ENV" >> /usr/local/etc/php/php.ini
+
+# Old contants
+set -e
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php-fpm "$@"
+fi
+exec "$@"

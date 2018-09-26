@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+
     nginx:
         build:
             context: ./nginx
@@ -8,11 +9,11 @@ services:
             - "${NGINX_PORT}:80"
         volumes:
             - ${VOLUME_ROOT}/nginx/logs:/logs
-            - ${VOLUME_ROOT}/nginx/data:/data
+            - ${REPO_ROOT}:/data
         depends_on:
-            - php-fpm-7
+            - php7-fpm
         networks:
-            - LEMP
+            - LEMPR
 
     redis:
         build:
@@ -23,7 +24,7 @@ services:
         ports:
             - "${REDIS_PORT}:6379"
         networks:
-            - LEMP
+            - LEMPR
 
     mariaDB:
         image: mariadb:latest
@@ -32,24 +33,59 @@ services:
         ports:
             - "${MARIADB_PORT}:3306"
         environment:
-            - MYSQL_ROOT_PASSWORD=888888
-            - MYSQL_DATABASE=app 
-            - MYSQL_USER=appuser
-            - MYSQL_PASSWORD=123456
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} 
+            - MYSQL_DATABASE=${MYSQL_DATABASE} 
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         networks:
-            - LEMP    
+            - LEMPR
 
-    php-fpm-7:
+    php7-repo:
         build:
             context: ./php/php7
+            dockerfile: repo/Dockerfile
         volumes:
-            - ${VOLUME_ROOT}/php/data:/data
-            - ${VOLUME_ROOT}/php/logs:/logs
+            - ${REPO_ROOT}:/data
+        environment:
+            - APP_ENV=${APP_ENV}
+            - REPO_URL=${REPO_URL}
+            - MYSQL_DATABASE=${MYSQL_DATABASE} 
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         depends_on:
             - mariaDB
             - redis
         networks:
-            - LEMP
+            - LEMPR   
+
+    php7-cli:
+        build:
+            context: ./php/php7
+            dockerfile: cli/Dockerfile
+        volumes:
+            - ${REPO_ROOT}:/data
+            - ${VOLUME_ROOT}/php/cli/logs:/logs
+        environment:
+            - APP_ENV=${APP_ENV}
+        depends_on:
+            - php7-repo
+        networks:
+            - LEMPR    
+
+    php7-fpm:
+        build:
+            context: ./php/php7
+            dockerfile: fpm/Dockerfile
+        volumes:
+            - ${REPO_ROOT}:/data
+            - ${VOLUME_ROOT}/php/session:/session
+            - ${VOLUME_ROOT}/php/fpm/logs:/logs
+        environment:
+            - APP_ENV=${APP_ENV}
+        depends_on:
+            - php7-cli
+        networks:
+            - LEMPR
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -61,9 +97,9 @@ services:
         depends_on:
             - mariaDB
         networks:
-            - LEMP
+            - LEMPR
 
 networks:
-    LEMP:
+    LEMPR:
       external:
         name: ${NETWORK_NAME}
