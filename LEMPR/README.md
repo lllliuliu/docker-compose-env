@@ -31,7 +31,7 @@
 ## 使用方式
 进入 `/dc` 之后，所有使用方式和 **docker-compose** 使用方式一致，主要使用命令如下：
 - 启动：`docker-compose up -d`
-- 重启：`docker-compose up -d`
+- 重启：`docker-compose restart`
 - 重启并重新构建镜像：`docker-compose up -d --build`
 - 停止并删除相关：`docker-compose down`
 
