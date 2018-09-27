@@ -60,8 +60,8 @@ esac
 # chown -R $USER:$GROUP $DATA
 # chmod -R 775 storage bootstrap/cache
 
-# Check whether mariaDB are started
-wait_for mariaDB 3306
+# Check whether mariadb are started
+wait_for mariadb 3306
 wait_for redis 6379
 
 # Initialize work after other containers start
