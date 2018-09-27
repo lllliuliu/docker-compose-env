@@ -26,10 +26,12 @@ services:
         networks:
             - LEMPR
 
-    mariaDB:
-        image: mariadb:latest
+    mariadb:
+        build:
+            context: ./mariadb
         volumes:
-            - ${VOLUME_ROOT}/mariadb:/var/lib/mysql:rw
+            - ${VOLUME_ROOT}/mariadb/data:/data
+            - ${VOLUME_ROOT}/mariadb/logs:/logs
         ports:
             - "${MARIADB_PORT}:3306"
         environment:
@@ -53,7 +55,7 @@ services:
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         depends_on:
-            - mariaDB
+            - mariadb
             - redis
         networks:
             - LEMPR   
@@ -93,9 +95,9 @@ services:
             - "${PHPMYADMIN_PORT}:80"
         environment:
             - PMA_ARBITRARY=1
-            - PMA_HOST=mariaDB
+            - PMA_HOST=mariadb
         depends_on:
-            - mariaDB
+            - mariadb
         networks:
             - LEMPR
 

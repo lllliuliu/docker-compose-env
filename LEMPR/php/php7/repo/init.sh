@@ -35,7 +35,7 @@ case $APP_ENV in
         fi
 
         # Update .env.test file
-        sed -i -E 's/DB_HOST=.+$/DB_HOST=mariaDB/g' .env.test
+        sed -i -E 's/DB_HOST=.+$/DB_HOST=mariadb/g' .env.test
         sed -i -E "s/DB_DATABASE=.+$/DB_DATABASE=${MYSQL_DATABASE}/g" .env.test
         sed -i -E "s/DB_USERNAME=.+$/DB_USERNAME=${MYSQL_USER}/g" .env.test
         sed -i -E "s/DB_PASSWORD=.+$/DB_PASSWORD=${MYSQL_PASSWORD}/g" .env.test
