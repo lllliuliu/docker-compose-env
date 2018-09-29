@@ -18,6 +18,7 @@
     
 
 ## 安装环境
+- linux 
 - Docker CE 18.03+
 - docker-compose 1.21+
 

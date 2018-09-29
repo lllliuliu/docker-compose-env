@@ -69,5 +69,6 @@ wait_for redis 6379
 # su-exec $USER php artisan migrate --env=$APP_ENV
 
 # Generate finish file
+# Note：It is recommended to place file in a non-git repository directory
 touch fin.lock
 
