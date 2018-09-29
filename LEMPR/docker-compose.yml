@@ -10,6 +10,7 @@ services:
         volumes:
             - ${VOLUME_ROOT}/nginx/logs:/logs
             - ${REPO_ROOT}:/data
+        restart: always
         depends_on:
             - php7-fpm
         networks:
@@ -21,6 +22,7 @@ services:
         volumes:
             - ${VOLUME_ROOT}/redis/logs:/logs
             - ${VOLUME_ROOT}/redis/data:/data
+        restart: always
         ports:
             - "${REDIS_PORT}:6379"
         networks:
@@ -39,6 +41,7 @@ services:
             - MYSQL_DATABASE=${MYSQL_DATABASE} 
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        restart: always
         networks:
             - LEMPR
 
@@ -54,6 +57,7 @@ services:
             - MYSQL_DATABASE=${MYSQL_DATABASE} 
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        restart: always
         depends_on:
             - mariadb
             - redis
@@ -69,6 +73,7 @@ services:
             - ${VOLUME_ROOT}/php/cli/logs:/logs
         environment:
             - APP_ENV=${APP_ENV}
+        restart: always
         depends_on:
             - php7-repo
         networks:
@@ -84,6 +89,7 @@ services:
             - ${VOLUME_ROOT}/php/fpm/logs:/logs
         environment:
             - APP_ENV=${APP_ENV}
+        restart: always
         depends_on:
             - php7-cli
         networks:
@@ -96,6 +102,7 @@ services:
         environment:
             - PMA_ARBITRARY=1
             - PMA_HOST=mariadb
+        restart: always
         depends_on:
             - mariadb
         networks:

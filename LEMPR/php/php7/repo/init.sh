@@ -67,8 +67,3 @@ wait_for redis 6379
 # Initialize work after other containers start
 # Example：migrate of laravel
 # su-exec $USER php artisan migrate --env=$APP_ENV
-
-# Generate finish file
-# Note：It is recommended to place file in a non-git repository directory
-touch fin.lock
-

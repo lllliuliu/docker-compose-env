@@ -2,12 +2,6 @@
 DATA="/data"
 USER="www-data"
 
-# Wait for repo to mount the volume
-while [ ! -f $DATA/fin.lock ]; do
-    echo "Wait for repo to initialize and try again 1 seconds later..."
-    sleep 1
-done
-
 # CLI Command
 # Example：task queue of laravel
 # cd $DATA
