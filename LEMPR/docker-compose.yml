@@ -57,7 +57,7 @@ services:
             - MYSQL_DATABASE=${MYSQL_DATABASE} 
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-        restart: always
+        restart: on-failure
         depends_on:
             - mariadb
             - redis

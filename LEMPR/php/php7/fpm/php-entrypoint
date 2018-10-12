@@ -3,11 +3,6 @@ DATA="/data"
 USER="www-data"
 GROUP="www-data"
 
-while [ ! -f $DATA/fin.lock ]; do
-    echo "Wait for repo to initialize and try again 1 seconds later..."
-    sleep 1
-done
-
 # Update session floder permissions
 chown -R $USER:$GROUP /session
 
