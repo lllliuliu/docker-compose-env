@@ -4,6 +4,6 @@ This repository stores the development environment based on docker-compose, one 
 
 ## Usage
 
-First, you need to get the initialize tool from [docker-init](https://github.com/lllliuliu/docker-init) and the run in a subfloder, you can get the `.env` file.
+First, you need to get the initialize tool from [docker-init](https://github.com/lllliuliu/docker-init) and the run in a subfolder, you can get the `.env` file.
 
-Run the `docker-compose up` command in a sunfloder.
+Run the `docker-compose up` command in a subfolder.
